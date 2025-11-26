@@ -1,35 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+import { StatelessComponent } from "./StatelessComponent";
+import { Header } from "./Header";
+import { Sidebar } from "./Sidebar";
+import { Footer } from "./Footer";
+import { MainArea } from "./MainArea";
 
-function App() {
-  const [count, setCount] = useState(0)
+export function App() {
+  const [count, setCount] = useState(0);
+  const [bgColor, setBgColor] = useState("#282c34");
+  const [zoom, setZoom] = useState(1);
+  const [color, setColor] = useState("white");
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="app">
+      <Header
+        setBgColor={setBgColor}
+        bgColor={bgColor}
+        zoom={zoom}
+        setZoom={setZoom}
+        color={color}
+        setColor={setColor}
+      />
+      <Sidebar setCount={setCount} count={count} />
+      <MainArea count={count} />
+      <Footer setCount={setCount} />
+    </div>
+  );
 }
-
-export default App
