@@ -1,10 +1,8 @@
 export const Footer = ({ setCount }) => {
   return (
-    <footer>
+    <footer className="footer">
       Footer
-      <button id="1" onClick={() => setCount(0)}>
-        Null
-      </button>
+      <button onClick={() => setCount(0)}>Null</button>
     </footer>
   );
 };

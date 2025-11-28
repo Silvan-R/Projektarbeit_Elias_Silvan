@@ -1,6 +1,5 @@
 import { useState } from "react";
 import "./App.css";
-import { StatelessComponent } from "./StatelessComponent";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
 import { Footer } from "./Footer";
@@ -12,6 +11,12 @@ export function App() {
   const [zoom, setZoom] = useState(1);
   const [color, setColor] = useState("white");
 
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  // Standort
+  const [selectedLocation, setSelectedLocation] = useState("");
+
   return (
     <div className="app">
       <Header
@@ -21,9 +26,22 @@ export function App() {
         setZoom={setZoom}
         color={color}
         setColor={setColor}
+        startDate={startDate}
+        setStartDate={setStartDate}
+        endDate={endDate}
+        setEndDate={setEndDate}
+        selectedLocation={selectedLocation}
+        setSelectedLocation={setSelectedLocation}
       />
-      <Sidebar setCount={setCount} count={count} />
+
+      <Sidebar
+        setCount={setCount}
+        count={count}
+        selectedLocation={selectedLocation}
+      />
+
       <MainArea count={count} />
+
       <Footer setCount={setCount} />
     </div>
   );

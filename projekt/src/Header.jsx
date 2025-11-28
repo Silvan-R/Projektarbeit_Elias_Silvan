@@ -5,24 +5,57 @@ export const Header = ({
   setZoom,
   setColor,
   color,
+  startDate,
+  setStartDate,
+  endDate,
+  setEndDate,
+  selectedLocation,
+  setSelectedLocation,
 }) => {
   return (
     <header
+      className="header"
       style={{
         backgroundColor: bgColor,
-        minHeight: "7vh",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "10px 20px",
         color: color,
         transform: `scale(${zoom})`,
-        transformOrigin: "center",
-        transition: "transform 0.2s ease",
       }}
     >
       Miniprojekt Toolbar
-      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+      <div className="header-controls">
+        {/* Standortauswahl */}
+        <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+          <label htmlFor="standort">Standort:</label>
+          <select
+            id="standort"
+            value={selectedLocation}
+            onChange={(e) => setSelectedLocation(e.target.value)}
+          >
+            <option value="">Bitte wählen</option>
+            <option value="S1">Standort 1</option>
+            <option value="S2">Standort 2</option>
+            <option value="S3">Standort 3</option>
+          </select>
+        </div>
+
+        {/* Datumsbereich */}
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <label>Von:</label>
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+          />
+
+          <label>Bis:</label>
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+          />
+        </div>
+
+        {/* Farbe ändern */}
         <button
           onClick={() => {
             setBgColor(bgColor === "#282c34" ? "#FFBF00" : "#282c34");
@@ -32,6 +65,7 @@ export const Header = ({
           Farbe ändern
         </button>
 
+        {/* Zoom */}
         <input
           type="range"
           min="0.5"

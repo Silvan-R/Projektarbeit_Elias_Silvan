@@ -1,3 +1,3 @@
 export const MainArea = ({ count }) => {
-  return <main>MainArea {count}</main>;
+  return <main className="main-area">MainArea {count}</main>;
 };
