@@ -7,24 +7,27 @@ body {
 .app {
   display: grid;
   min-height: 100vh;
-  grid-template-columns: 200px 1fr;
+  grid-template-columns: 500px 1fr; /* Grösse Sidebar */
   grid-template-rows: auto 1fr auto;
 }
 
-header {
+.header {
   background: lightblue;
   grid-column: 1 / -1;
   min-height: 7vh;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  white-space: nowrap;
+  gap: 20px;
   padding: 10px 20px;
   transition: transform 0.2s ease;
 }
-header-controls {
+.header-controls {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
+  white-space: nowrap;
 }
 
 sidebar {

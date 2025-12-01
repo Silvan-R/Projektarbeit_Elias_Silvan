@@ -1,3 +1,4 @@
+import teildatensatz from "./Teildatensatz.json";
 import { useState } from "react";
 import "./App.css";
 import { Header } from "./Header";
@@ -6,9 +7,7 @@ import { Footer } from "./Footer";
 import { MainArea } from "./MainArea";
 
 export function App() {
-  const [count, setCount] = useState(0);
   const [bgColor, setBgColor] = useState("#282c34");
-  const [zoom, setZoom] = useState(1);
   const [color, setColor] = useState("white");
 
   const [startDate, setStartDate] = useState("");
@@ -17,13 +16,19 @@ export function App() {
   // Standort
   const [selectedLocation, setSelectedLocation] = useState("");
 
+  // AUTOMATISCH: Liste aller Standorte bauen
+
+  const standorte = Array.from(
+    new Map(
+      teildatensatz.map((item) => [item.location_id, item.location_name])
+    ).entries()
+  ).map(([id, name]) => ({ id, name }));
+
   return (
     <div className="app">
       <Header
         setBgColor={setBgColor}
         bgColor={bgColor}
-        zoom={zoom}
-        setZoom={setZoom}
         color={color}
         setColor={setColor}
         startDate={startDate}
@@ -32,17 +37,19 @@ export function App() {
         setEndDate={setEndDate}
         selectedLocation={selectedLocation}
         setSelectedLocation={setSelectedLocation}
+        standorte={standorte}
       />
 
       <Sidebar
-        setCount={setCount}
-        count={count}
         selectedLocation={selectedLocation}
+        standorte={standorte}
+        startDate={startDate}
+        endDate={endDate}
       />
 
-      <MainArea count={count} />
+      <MainArea />
 
-      <Footer setCount={setCount} />
+      <Footer />
     </div>
   );
 }
