@@ -43,8 +43,8 @@ export const Sidebar = ({
           onChange={(e) => setDarstellung(e.target.value)}
         >
           <option value="">Bitte wählen</option>
-          <option value="Anteil Kinder">Anteil Kinder</option>
-          <option value="Laufrichtung">Laufrichtung</option>
+          <option value="kinderanteil">Anteil Kinder</option>
+          <option value="laufrichtung">Laufrichtung</option>
         </select>
       </div>
     </aside>

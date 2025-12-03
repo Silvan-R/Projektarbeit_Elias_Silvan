@@ -16,7 +16,10 @@ export function App() {
 
   // Zurücksetzen Knopf
   const zurücksetzen = () => {
-    setSelectedLocation, setStartDate, setEndDate, setDarstellung;
+    setSelectedLocation(""),
+      setStartDate(""),
+      setEndDate(""),
+      setDarstellung("");
   };
 
   // AUTOMATISCH: Liste aller Standorte bauen
