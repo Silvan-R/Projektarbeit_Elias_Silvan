@@ -9,12 +9,10 @@ import { MainArea } from "./MainArea";
 export function App() {
   const [bgColor, setBgColor] = useState("#282c34");
   const [color, setColor] = useState("white");
-
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-
-  // Standort
   const [selectedLocation, setSelectedLocation] = useState("");
+  const [darstellung, setDarstellung] = useState("");
 
   // AUTOMATISCH: Liste aller Standorte bauen
 
@@ -45,6 +43,8 @@ export function App() {
         standorte={standorte}
         startDate={startDate}
         endDate={endDate}
+        darstellung={darstellung}
+        setDarstellung={setDarstellung}
       />
 
       <MainArea />

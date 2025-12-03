@@ -3,27 +3,49 @@ export const Sidebar = ({
   standorte,
   startDate,
   endDate,
+  darstellung,
+  setDarstellung,
 }) => {
   const ausgewaehlterStandort = standorte.find(
     (s) => s.id === Number(selectedLocation)
   );
   return (
     <aside className="sidebar">
-      <h3>Standort</h3>
-      <p>
-        <strong>Aktueller Standort:</strong>
-        <br />
-        {ausgewaehlterStandort
-          ? ausgewaehlterStandort.name
-          : "Kein Standort ausgewählt"}
-      </p>
+      <div style={{ display: "flex", gap: "5px" }}>
+        <div style={{ flex: 1 }}>
+          <h3>Standort</h3>
+          <p>
+            <strong>Aktueller Standort:</strong>
+            <br />
+            {ausgewaehlterStandort
+              ? ausgewaehlterStandort.name
+              : "Kein Standort ausgewählt"}
+          </p>
+        </div>
 
-      <h3>Zeitfenster</h3>
-      <p>
-        <strong>Von:</strong> {startDate || "—"}
-        <br />
-        <strong>Bis:</strong> {endDate || "—"}
-      </p>
+        <div style={{ flex: 1 }}>
+          <h3>Zeitfenster</h3>
+          <p>
+            <strong>Von:</strong> {startDate || "—"}
+            <br />
+            <strong>Bis:</strong> {endDate || "—"}
+          </p>
+        </div>
+      </div>
+
+      <h3>Auswahl Darstellung</h3>
+      <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+        <label htmlFor="standort">Auswahl:</label>
+        <select
+          id="standort"
+          value={darstellung}
+          onChange={(e) => setDarstellung(e.target.value)}
+        >
+          <option value="">Bitte wählen</option>
+          <option value="">Anteil Kinder</option>
+          <option value="">Laufrichtung</option>
+        </select>
+      </div>
     </aside>
   );
 };
