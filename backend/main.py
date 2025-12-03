@@ -3,24 +3,17 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-origins = [
-    "http://localhost.tiangolo.com",
-    "https://localhost.tiangolo.com",
-    "http://localhost",
-    "http://localhost:8080",
-]
-
+# ⭐ CORS aktivieren – sonst blockiert der Browser alles!
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],  # oder ["http://localhost:5173"]
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-@app.get('/')
+@app.get("/")
 def get_hello_world():
-    '''Gibt String 'Hallo Welt' zurück'''
-    return {"message": "Hallo Welt"}
+    return {"message": "Hallo Welt test"}
 
 
