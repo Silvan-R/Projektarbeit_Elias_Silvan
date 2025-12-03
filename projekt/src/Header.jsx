@@ -17,7 +17,7 @@ export const Header = ({
         color: color,
       }}
     >
-      Miniprojekt Toolbar
+      WID Projektarbeit
       <div className="header-controls">
         {/* Standortauswahl */}
         <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>

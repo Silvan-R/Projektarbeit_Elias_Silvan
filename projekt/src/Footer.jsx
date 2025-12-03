@@ -1,7 +1,18 @@
-export const Footer = ({ setCount }) => {
+export const Footer = ({ zurücksetzen }) => {
   return (
     <footer className="footer">
-      <button onClick={() => setCount(0)}>Zurücksetzen</button>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          width: "100%",
+        }}
+      >
+        <h4>WID-Projektarbeit</h4>
+        <button onClick={zurücksetzen}>Zurücksetzen</button>
+        <h4>Elias Roos, Silvan Ryser</h4>
+      </div>
     </footer>
   );
 };

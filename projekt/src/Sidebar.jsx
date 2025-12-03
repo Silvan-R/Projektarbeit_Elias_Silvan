@@ -12,6 +12,8 @@ export const Sidebar = ({
   return (
     <aside className="sidebar">
       <div style={{ display: "flex", gap: "5px" }}>
+        {" "}
+        {/* Standort und Zeitfenster auf gleicher Höhe */}
         <div style={{ flex: 1 }}>
           <h3>Standort</h3>
           <p>
@@ -22,7 +24,6 @@ export const Sidebar = ({
               : "Kein Standort ausgewählt"}
           </p>
         </div>
-
         <div style={{ flex: 1 }}>
           <h3>Zeitfenster</h3>
           <p>
@@ -42,8 +43,8 @@ export const Sidebar = ({
           onChange={(e) => setDarstellung(e.target.value)}
         >
           <option value="">Bitte wählen</option>
-          <option value="">Anteil Kinder</option>
-          <option value="">Laufrichtung</option>
+          <option value="Anteil Kinder">Anteil Kinder</option>
+          <option value="Laufrichtung">Laufrichtung</option>
         </select>
       </div>
     </aside>

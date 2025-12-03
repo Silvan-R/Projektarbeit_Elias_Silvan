@@ -14,6 +14,11 @@ export function App() {
   const [selectedLocation, setSelectedLocation] = useState("");
   const [darstellung, setDarstellung] = useState("");
 
+  // Zurücksetzen Knopf
+  const zurücksetzen = () => {
+    setSelectedLocation, setStartDate, setEndDate, setDarstellung;
+  };
+
   // AUTOMATISCH: Liste aller Standorte bauen
 
   const standorte = Array.from(
@@ -49,7 +54,7 @@ export function App() {
 
       <MainArea />
 
-      <Footer />
+      <Footer zurücksetzen={zurücksetzen} />
     </div>
   );
 }
