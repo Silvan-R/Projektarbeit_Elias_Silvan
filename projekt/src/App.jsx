@@ -5,6 +5,7 @@ import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
 import { Footer } from "./Footer";
 import { MainArea } from "./MainArea";
+import { useEffect } from "react";
 
 export function App() {
   const [bgColor, setBgColor] = useState("#282c34");
@@ -13,6 +14,20 @@ export function App() {
   const [endDate, setEndDate] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
   const [darstellung, setDarstellung] = useState("");
+
+  // 🟦 NEU: API-Antwort speichern
+  const [apiMessage, setApiMessage] = useState("");
+
+  // 🟦 Backend-API aufrufen
+  useEffect(() => {
+    fetch("http://localhost:8000/")
+      .then((res) => res.json())
+      .then((data) => {
+        setApiMessage(data.message);
+        console.log("Antwort vom Backend:", data.message);
+      })
+      .catch((err) => console.error("API Fehler:", err));
+  }, []);
 
   // Zurücksetzen Knopf
   const zurücksetzen = () => {
@@ -45,7 +60,6 @@ export function App() {
         setSelectedLocation={setSelectedLocation}
         standorte={standorte}
       />
-
       <Sidebar
         selectedLocation={selectedLocation}
         standorte={standorte}
@@ -54,9 +68,7 @@ export function App() {
         darstellung={darstellung}
         setDarstellung={setDarstellung}
       />
-
       <MainArea />
-
       <Footer zurücksetzen={zurücksetzen} />
     </div>
   );
