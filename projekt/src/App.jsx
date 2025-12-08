@@ -37,8 +37,16 @@ export function App() {
       setDarstellung("");
   };
 
-  // AUTOMATISCH: Liste aller Standorte bauen
 
+  // Anwenden-Knopf
+  const anwenden = () => {
+    console.log("🔍 Filter angewendet:");
+    console.log("Standort:", selectedLocation);
+    console.log("Start:", startDate);
+    console.log("Ende:", endDate);
+    console.log("Darstellung:", darstellung);
+
+  // AUTOMATISCH: Liste aller Standorte bauen
   const standorte = Array.from(
     new Map(
       teildatensatz.map((item) => [item.location_id, item.location_name])
@@ -59,6 +67,7 @@ export function App() {
         selectedLocation={selectedLocation}
         setSelectedLocation={setSelectedLocation}
         standorte={standorte}
+        anwenden={anwenden}
       />
       <Sidebar
         selectedLocation={selectedLocation}

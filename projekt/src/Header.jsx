@@ -8,6 +8,7 @@ export const Header = ({
   selectedLocation,
   setSelectedLocation,
   standorte,
+  anwenden,
 }) => {
   return (
     <header
@@ -51,6 +52,7 @@ export const Header = ({
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
           />
+          <button onClick={anwenden}>Anwenden</button>
         </div>
       </div>
       <img
