@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import pandas as pd
 
 app = FastAPI()
 
@@ -12,8 +13,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
-def get_hello_world():
-    return {"message": "Hallo Welt test"}
+df = pd.read_json("Teildatensatz.json")
+
+@app.get("/data")
+def get_data():
+    return df.head(5).to_dict(orient="records")
 
 
