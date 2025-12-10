@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-# ⭐ CORS aktivieren – sonst blockiert der Browser alles!
+# CORS aktivieren – sonst blockiert der Browser alles!
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # oder ["http://localhost:5173"]
