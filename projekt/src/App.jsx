@@ -10,7 +10,7 @@ export function App() {
   const [bgColor, setBgColor] = useState("#282c34");
   const [color, setColor] = useState("white");
   const [startDate, setStartDate] = useState("2022-01"); //Standarteinstellung Datum für Fokusfrage
-  const [endDate, setEndDate] = useState("2022-12"); //Standarteinstellung Datum für Fokusfrage
+  const [endDate, setEndDate] = useState("2023-01"); //Standarteinstellung Datum für Fokusfrage
   const [selectedLocation, setSelectedLocation] = useState(
     "Bahnhofstrasse (Mitte)"
   ); //Standarteinstellung Datum für Fokusfrage => 329 = ID Mitte
@@ -83,7 +83,7 @@ export function App() {
         darstellung={darstellung}
         setDarstellung={setDarstellung}
       />
-      <MainArea darstellung={darstellung} childShareData={kinderanteil} />
+      <MainArea darstellung={darstellung} kinderanteil={kinderanteil} />
       <Footer zurücksetzen={zurücksetzen} />
     </div>
   );
