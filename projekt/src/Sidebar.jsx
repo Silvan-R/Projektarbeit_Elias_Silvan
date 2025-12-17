@@ -1,27 +1,20 @@
 export const Sidebar = ({
   selectedLocation,
-  standorte,
   startDate,
   endDate,
   darstellung,
   setDarstellung,
 }) => {
-  const ausgewaehlterStandort = standorte.find(
-    (s) => s.id === Number(selectedLocation)
-  );
   return (
     <aside className="sidebar">
       <div style={{ display: "flex", gap: "5px" }}>
-        {" "}
         {/* Standort und Zeitfenster auf gleicher Höhe */}
         <div style={{ flex: 1 }}>
           <h3>Standort</h3>
           <p>
             <strong>Aktueller Standort:</strong>
             <br />
-            {ausgewaehlterStandort
-              ? ausgewaehlterStandort.name
-              : "Kein Standort ausgewählt"}
+            {selectedLocation || "Kein Standort ausgewählt"}
           </p>
         </div>
         <div style={{ flex: 1 }}>
