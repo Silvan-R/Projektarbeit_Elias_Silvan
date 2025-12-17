@@ -20,9 +20,7 @@ export const Header = ({
             value={selectedLocation}
             onChange={(e) => setSelectedLocation(e.target.value)}
           >
-            <option value="Bahnhofstrasse (Mitte)">
-              Bahnhofsstrasse (Mitte)
-            </option>
+            <option value="Bahnhofstrasse (Mitte)"></option>
             {standorte.map((s) => (
               <option key={s.id} value={s.id}>
                 {s.name}

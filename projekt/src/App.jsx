@@ -1,4 +1,3 @@
-import teildatensatz from "./Teildatensatz.json";
 import { useState } from "react";
 import "./App.css";
 import { Header } from "./Header";
@@ -14,20 +13,33 @@ export function App() {
   const [endDate, setEndDate] = useState("2022-12"); //Standarteinstellung Datum für Fokusfrage
   const [selectedLocation, setSelectedLocation] = useState(329); //Standarteinstellung Datum für Fokusfrage => 329 = ID Mitte
   const [darstellung, setDarstellung] = useState("");
+  const [standorte, setStandorte] = useState([]);
+  const [kinderanteil, setKinderanteil] = useState(null);
 
-  // 🟦 NEU: API-Antwort speichern
-  const [apiMessage, setApiMessage] = useState("");
-
-  // 🟦 Backend-API aufrufen
   useEffect(() => {
-    fetch("http://localhost:8000/")
+    fetch("http://localhost:8000/standorte")
       .then((res) => res.json())
       .then((data) => {
-        setApiMessage(data.message);
-        console.log("Antwort vom Backend:", data.message);
+        setStandorte(data);
       })
-      .catch((err) => console.error("API Fehler:", err));
+      .catch((err) => console.error("Fehler beim Laden der Standorte:", err));
   }, []);
+
+  const anwenden = () => {
+    const url =
+      `http://localhost:8000/fokusfrage` +
+      `?location=${encodeURIComponent(selectedLocation)}` +
+      `&start_date=${startDate}` +
+      `&end_date=${endDate}`;
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Backend-Daten:", data);
+        setKinderanteil(data);
+      })
+      .catch((err) => console.error("Fehler beim Laden der Daten:", err));
+  };
 
   // Zurücksetzen Knopf
   const zurücksetzen = () => {
@@ -38,20 +50,13 @@ export function App() {
   };
 
   // Anwenden-Knopf
-  const anwenden = () => {
-    console.log("Filter angewendet:");
-    console.log("Standort:", selectedLocation);
-    console.log("Start:", startDate);
-    console.log("Ende:", endDate);
-    console.log("Darstellung:", darstellung);
-  };
-
-  // AUTOMATISCH: Liste aller Standorte bauen
-  const standorte = Array.from(
-    new Map(
-      teildatensatz.map((item) => [item.location_id, item.location_name])
-    ).entries()
-  ).map(([id, name]) => ({ id, name }));
+  //const anwenden = () => {
+  //  console.log("Filter angewendet:");
+  // console.log("Standort:", selectedLocation);
+  //  console.log("Start:", startDate);
+  //  console.log("Ende:", endDate);
+  //    console.log("Darstellung:", darstellung);
+  //};
 
   return (
     <div className="app">
@@ -77,7 +82,7 @@ export function App() {
         darstellung={darstellung}
         setDarstellung={setDarstellung}
       />
-      <MainArea />
+      <MainArea darstellung={darstellung} childShareData={kinderanteil} />
       <Footer zurücksetzen={zurücksetzen} />
     </div>
   );
