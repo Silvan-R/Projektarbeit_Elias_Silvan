@@ -1,6 +1,4 @@
 export const Header = ({
-  bgColor,
-  color,
   startDate,
   setStartDate,
   endDate,
@@ -11,13 +9,7 @@ export const Header = ({
   anwenden,
 }) => {
   return (
-    <header
-      className="header"
-      style={{
-        backgroundColor: bgColor,
-        color: color,
-      }}
-    >
+    <header className="header">
       WID Projektarbeit
       <div className="header-controls">
         {/* Standortauswahl */}
@@ -28,7 +20,9 @@ export const Header = ({
             value={selectedLocation}
             onChange={(e) => setSelectedLocation(e.target.value)}
           >
-            <option value="">Bitte wählen</option>
+            <option value="Bahnhofstrasse (Mitte)">
+              Bahnhofsstrasse (Mitte)
+            </option>
             {standorte.map((s) => (
               <option key={s.id} value={s.id}>
                 {s.name}
@@ -41,14 +35,14 @@ export const Header = ({
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <label>Von:</label>
           <input
-            type="date"
+            type="month"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
           />
 
           <label>Bis:</label>
           <input
-            type="date"
+            type="month"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
           />

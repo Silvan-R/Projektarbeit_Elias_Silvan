@@ -10,9 +10,9 @@ import { useEffect } from "react";
 export function App() {
   const [bgColor, setBgColor] = useState("#282c34");
   const [color, setColor] = useState("white");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState("");
+  const [startDate, setStartDate] = useState("2022-01"); //Standarteinstellung Datum für Fokusfrage
+  const [endDate, setEndDate] = useState("2022-12"); //Standarteinstellung Datum für Fokusfrage
+  const [selectedLocation, setSelectedLocation] = useState(329); //Standarteinstellung Datum für Fokusfrage => 329 = ID Mitte
   const [darstellung, setDarstellung] = useState("");
 
   // 🟦 NEU: API-Antwort speichern
@@ -39,7 +39,7 @@ export function App() {
 
   // Anwenden-Knopf
   const anwenden = () => {
-    console.log("🔍 Filter angewendet:");
+    console.log("Filter angewendet:");
     console.log("Standort:", selectedLocation);
     console.log("Start:", startDate);
     console.log("Ende:", endDate);
