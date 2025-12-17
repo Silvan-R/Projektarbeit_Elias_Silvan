@@ -37,7 +37,6 @@ export function App() {
       setDarstellung("");
   };
 
-
   // Anwenden-Knopf
   const anwenden = () => {
     console.log("🔍 Filter angewendet:");
@@ -45,6 +44,7 @@ export function App() {
     console.log("Start:", startDate);
     console.log("Ende:", endDate);
     console.log("Darstellung:", darstellung);
+  };
 
   // AUTOMATISCH: Liste aller Standorte bauen
   const standorte = Array.from(
