@@ -23,18 +23,8 @@ export function App() {
     useState(selectedLocation);
   //Standarteinstellung Standort für Fokusfrage
   const [darstellung, setDarstellung] = useState("");
-  //const [standorte, setStandorte] = useState([]);
   const [kinderanteil, setKinderanteil] = useState(null);
   const [reset, setReset] = useState(0);
-
-  /*useEffect(() => {
-    fetch("http://localhost:8000/standorte")
-      .then((res) => res.json())
-      .then((data) => {
-        setStandorte(data);
-      })
-      .catch((err) => console.error("Fehler beim Laden der Standorte:", err));
-  }, []); */
 
   const anwenden = () => {
     setAngewendetesStartDate(startDate);
@@ -63,7 +53,6 @@ export function App() {
     anwenden();
   }, [reset]);
 
-  // Zurücksetzen Knopf
   const zurücksetzen = () => {
     setSelectedLocation("Bahnhofstrasse (Mitte)");
     setStartDate("2022-01");
@@ -72,15 +61,6 @@ export function App() {
 
     setReset((wert) => wert + 1);
   };
-
-  // Anwenden-Knopf
-  //const anwenden = () => {
-  //  console.log("Filter angewendet:");
-  // console.log("Standort:", selectedLocation);
-  //  console.log("Start:", startDate);
-  //  console.log("Ende:", endDate);
-  //    console.log("Darstellung:", darstellung);
-  //};
 
   return (
     <div className="app">
@@ -95,12 +75,10 @@ export function App() {
         setEndDate={setEndDate}
         selectedLocation={selectedLocation}
         setSelectedLocation={setSelectedLocation}
-        //standorte={standorte}
         anwenden={anwenden}
       />
       <Sidebar
         selectedLocation={selectedLocation}
-        //standorte={standorte}
         startDate={startDate}
         endDate={endDate}
         darstellung={darstellung}
