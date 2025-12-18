@@ -4,7 +4,7 @@ import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
 import { Footer } from "./Footer";
 import { MainArea } from "./MainArea";
-//import { useEffect } from "react";
+import { useEffect } from "react";
 
 export function App() {
   const [bgColor, setBgColor] = useState("#282c34");
@@ -13,7 +13,7 @@ export function App() {
   const [endDate, setEndDate] = useState("2023-01"); //Standarteinstellung Datum für Fokusfrage
   const [selectedLocation, setSelectedLocation] = useState(
     "Bahnhofstrasse (Mitte)"
-  ); //Standarteinstellung Datum für Fokusfrage => 329 = ID Mitte
+  ); //Standarteinstellung Standort für Fokusfrage
   const [darstellung, setDarstellung] = useState("");
   //const [standorte, setStandorte] = useState([]);
   const [kinderanteil, setKinderanteil] = useState(null);
@@ -41,12 +41,15 @@ export function App() {
       })
       .catch((err) => console.error("Fehler beim Laden der Daten:", err));
   };
+  useEffect(() => {
+    anwenden();
+  }, []);
 
   // Zurücksetzen Knopf
   const zurücksetzen = () => {
-    setSelectedLocation(""),
-      setStartDate(""),
-      setEndDate(""),
+    setSelectedLocation("Bahnhofstrasse (Mitte)"),
+      setStartDate("2022-01"),
+      setEndDate("2023-01"),
       setDarstellung("");
   };
 
