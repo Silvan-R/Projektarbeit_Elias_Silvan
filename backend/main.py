@@ -43,23 +43,11 @@ df["adult_pedestrians_count"] = pd.to_numeric(
 # Zeilen entfernen, bei denen Kinder- oder Erwachsenenwerte fehlen
 df = df.dropna(subset=["child_pedestrians_count", "adult_pedestrians_count"])
 
+Monate = [
+    "Jan", "Feb", "Mär", "Apr", "Mai", "Jun",
+    "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"
+]
 
-# --------------------------------------------------
-# META-ENDPOINT: verfügbare Standorte
-# --------------------------------------------------
-
-@app.get("/standorte")
-def get_standorte():
-    """
-    Gibt eine Liste aller verfügbaren Standortnamen zurück.
-    Wird z.B. für ein Dropdown im Frontend verwendet.
-    """
-    return sorted(df["location_name"].dropna().unique().tolist())
-
-
-# --------------------------------------------------
-# FOKUSFRAGE: Kinderanteil pro Monat
-# --------------------------------------------------
 
 @app.get("/fokusfrage")
 def fokusfrage(
@@ -107,25 +95,34 @@ def fokusfrage(
         children=("child_pedestrians_count", "sum"),
         adults=("adult_pedestrians_count", "sum"),
     )
+    # Alle Monate 1–12 definieren
+    alle_monate = pd.DataFrame({"month": range(1, 13)})
+
+# Sicherstellen, dass alle Monate vorhanden sind
+    grouped = alle_monate.merge(grouped, on="month", how="left")
+
+# Fehlende Werte mit 0 ersetzen
+    grouped["children"] = grouped["children"].fillna(0)
+    grouped["adults"] = grouped["adults"].fillna(0)
 
     results = []
+
 
     # Für jeden Monat den Kinderanteil berechnen
     for month, row in grouped.iterrows():
         total = row["children"] + row["adults"]
 
-        # Schutz vor Division durch 0
-        if total == 0:
-            continue
-
-        kinder_anteil = (row["children"] / total) * 100
+        if total > 0:
+            kinder_anteil = (row["children"] / total) * 100
+        else:
+            kinder_anteil = 0
 
         results.append(
             {
-                "month": int(month),                     # Monat (1–12)
-                "kinderanteil_prozent": round(kinder_anteil, 2),  # Anteil in %
-                "children": int(row["children"]),        # Kinder absolut
-                "adults": int(row["adults"]),            # Erwachsene absolut
+                "month": Monate[int(row["month"])-1],               
+                "kinderanteil_prozent": round(kinder_anteil, 2),
+                "children": int(row["children"]),       
+                "adults": int(row["adults"]),            
             }
         )
 
@@ -134,8 +131,8 @@ def fokusfrage(
 
     # Resultat zurückgeben
     return {
-        "Werte": results,   # Daten für Balkendiagramm
-        "max": max_month,    # Monat mit höchstem Anteil
+        "Werte": results,   
+        "max": max_month,    
     }
 
 
