@@ -9,14 +9,23 @@ import { useEffect } from "react";
 export function App() {
   const [bgColor, setBgColor] = useState("#282c34");
   const [color, setColor] = useState("white");
+  //akutelle Auswahl:
   const [startDate, setStartDate] = useState("2022-01"); //Standarteinstellung Datum für Fokusfrage
   const [endDate, setEndDate] = useState("2023-01"); //Standarteinstellung Datum für Fokusfrage
   const [selectedLocation, setSelectedLocation] = useState(
     "Bahnhofstrasse (Mitte)"
-  ); //Standarteinstellung Standort für Fokusfrage
+  );
+
+  // angwendete Filter (für Text und Visalisierung):
+  const [angewendetesStartDate, setAngewendetesStartDate] = useState(startDate);
+  const [angewendetesEndDate, setAngewendetesEndDate] = useState(endDate);
+  const [angewendeterLocation, setAngewendeterLocation] =
+    useState(selectedLocation);
+  //Standarteinstellung Standort für Fokusfrage
   const [darstellung, setDarstellung] = useState("");
   //const [standorte, setStandorte] = useState([]);
   const [kinderanteil, setKinderanteil] = useState(null);
+  const [reset, setReset] = useState(0);
 
   /*useEffect(() => {
     fetch("http://localhost:8000/standorte")
@@ -28,6 +37,10 @@ export function App() {
   }, []); */
 
   const anwenden = () => {
+    setAngewendetesStartDate(startDate);
+    setAngewendetesEndDate(endDate);
+    setAngewendeterLocation(selectedLocation);
+
     const url =
       `http://localhost:8000/fokusfrage` +
       `?location=${encodeURIComponent(selectedLocation)}` +
@@ -45,12 +58,19 @@ export function App() {
     anwenden();
   }, []);
 
+  useEffect(() => {
+    //reagiert auf Reset (damit zurücksetzen knopf nur einmal gedrückt werden muss)
+    anwenden();
+  }, [reset]);
+
   // Zurücksetzen Knopf
   const zurücksetzen = () => {
-    setSelectedLocation("Bahnhofstrasse (Mitte)"),
-      setStartDate("2022-01"),
-      setEndDate("2023-01"),
-      setDarstellung("");
+    setSelectedLocation("Bahnhofstrasse (Mitte)");
+    setStartDate("2022-01");
+    setEndDate("2023-01");
+    setDarstellung("");
+
+    setReset((wert) => wert + 1);
   };
 
   // Anwenden-Knopf
@@ -86,7 +106,13 @@ export function App() {
         darstellung={darstellung}
         setDarstellung={setDarstellung}
       />
-      <MainArea darstellung={darstellung} kinderanteil={kinderanteil} />
+      <MainArea
+        darstellung={darstellung}
+        kinderanteil={kinderanteil}
+        startDate={angewendetesStartDate}
+        endDate={angewendetesEndDate}
+        selectedLocation={angewendeterLocation}
+      />
       <Footer zurücksetzen={zurücksetzen} />
     </div>
   );
