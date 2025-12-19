@@ -1,41 +1,25 @@
-export const MainArea = ({
-  kinderanteil,
-  startDate,
-  endDate,
-  selectedLocation,
-}) => {
-  if (!kinderanteil) {
-    return <main className="main-area">Keine Daten</main>;
-  }
+import { VegaLite } from "react-vega";
 
-  const istStandardFokusfrage =
-    selectedLocation === "Bahnhofstrasse (Mitte)" &&
-    startDate === "2022-01" &&
-    endDate === "2023-01";
+export const MainArea = () => {
+  const spec = {
+    data: {
+      values: [
+        { a: "Jan", b: 10 },
+        { a: "Feb", b: 20 },
+        { a: "Mär", b: 15 },
+      ],
+    },
+    mark: "bar",
+    encoding: {
+      x: { field: "a", type: "ordinal" },
+      y: { field: "b", type: "quantitative" },
+    },
+  };
 
   return (
-    <main className="main-area">
-      {istStandardFokusfrage ? (
-        <h3>
-          In welchem Monat im Jahr 2022 ist der Anteil der Kinder im Vergleich
-          zu den erwachsenen Fussgängern am grössten am Ort Bahnhofstrasse
-          Mitte?
-        </h3>
-      ) : (
-        <h3>
-          {" "}
-          Kinderanteil am Standort {selectedLocation} gegenüber Erwachsenen
-          zwischen {startDate} und {endDate}
-        </h3>
-      )}
-
-      <ul>
-        {kinderanteil.Werte.map((eintrag) => (
-          <li key={eintrag.month}>
-            Monat {eintrag.month}: {eintrag.kinderanteil_prozent} %
-          </li>
-        ))}
-      </ul>
-    </main>
+    <div style={{ width: "600px", padding: "20px" }}>
+      <h3>VegaLite Test</h3>
+      <VegaLite spec={spec} />
+    </div>
   );
 };
