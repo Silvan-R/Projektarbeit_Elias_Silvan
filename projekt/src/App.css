@@ -47,3 +47,10 @@ main {
   background: white;
   padding: 20px;
 }
+
+.chart-info {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: #555;
+  max-width: 1000px;
+}
