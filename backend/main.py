@@ -48,6 +48,9 @@ Monate = [
     "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"
 ]
 
+df["weather_condition"] = df["weather_condition"].astype(str)
+
+
 
 @app.get("/fokusfrage")
 def fokusfrage(
@@ -95,11 +98,25 @@ def fokusfrage(
         children=("child_pedestrians_count", "sum"),
         adults=("adult_pedestrians_count", "sum"),
     )
+    # Häufigste Wetterbedingung pro Monat bestimmen
+    weather_per_month = (
+        subset.groupby("month")["weather_condition"]
+        .agg(lambda x: x.value_counts().idxmax())
+        .reset_index()
+)
     # Alle Monate 1–12 definieren
     alle_monate = pd.DataFrame({"month": range(1, 13)})
 
 # Sicherstellen, dass alle Monate vorhanden sind
     grouped = alle_monate.merge(grouped, on="month", how="left")
+    # Wetterdaten anhängen
+    grouped = grouped.merge(
+        weather_per_month,
+        on="month",
+        how="left"
+    )
+    grouped["weather_condition"] = grouped["weather_condition"].fillna("Keine Daten")
+
 
 # Fehlende Werte mit 0 ersetzen
     grouped["children"] = grouped["children"].fillna(0)
@@ -122,7 +139,9 @@ def fokusfrage(
                 "month": Monate[int(row["month"])-1],               
                 "kinderanteil_prozent": round(kinder_anteil, 2),
                 "children": int(row["children"]),       
-                "adults": int(row["adults"]),            
+                "adults": int(row["adults"]), 
+                "weather_condition": row["weather_condition"], 
+                "total_personen": int(row["children"] + row["adults"]),          
             }
         )
 
