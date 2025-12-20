@@ -1,4 +1,5 @@
 import { VegaLite } from "react-vega";
+import React from "react";
 
 export const MainArea = () => {
   const spec = {
