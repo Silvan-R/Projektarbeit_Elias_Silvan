@@ -5,6 +5,7 @@ export function MainArea({
   startDate,
   endDate,
   selectedLocation,
+  setSelectedMonth,
 }) {
   // Absicherung: Daten noch nicht da
   if (!kinderanteil || !kinderanteil.Werte) {
@@ -35,6 +36,15 @@ export function MainArea({
 
     mark: "bar",
 
+    selection: {
+      monatAuswahl: {
+        type: "single",
+        fields: ["month"],
+        on: "click",
+        clear: "dblclick",
+      },
+    },
+
     encoding: {
       x: {
         field: "month",
@@ -60,6 +70,13 @@ export function MainArea({
         type: "quantitative",
         title: "Kinderanteil in %",
         scale: { domain: [0, 5] },
+      },
+      color: {
+        condition: {
+          selection: "monatAuswahl",
+          value: "#ff7f0e",
+        },
+        value: "#4c78a8",
       },
       tooltip: [
         { field: "month", type: "ordinal" },

@@ -25,6 +25,7 @@ export function App() {
   const [darstellung, setDarstellung] = useState("");
   const [kinderanteil, setKinderanteil] = useState(null);
   const [reset, setReset] = useState(0);
+  const [selectedMonth, setSelectedMonth] = useState(null); //für ineraktives auaswählen in der Grafik
 
   const anwenden = () => {
     setAngewendetesStartDate(startDate);
@@ -83,6 +84,7 @@ export function App() {
         endDate={endDate}
         darstellung={darstellung}
         setDarstellung={setDarstellung}
+        selectedMonth={selectedMonth}
       />
       <MainArea
         darstellung={darstellung}
@@ -90,6 +92,7 @@ export function App() {
         startDate={angewendetesStartDate}
         endDate={angewendetesEndDate}
         selectedLocation={angewendeterLocation}
+        setSelectedMonth={setSelectedMonth}
       />
       <Footer zurücksetzen={zurücksetzen} />
     </div>
