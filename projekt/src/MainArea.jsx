@@ -23,9 +23,9 @@ export function MainArea({
     height: 300,
 
     data: {
-      values: kinderanteil.Werte, // Das sind deine Daten
+      values: kinderanteil.Werte,
     },
-    //Kinderanteil nur bis 5% anzeigen
+
     transform: [
       {
         calculate:
@@ -34,16 +34,20 @@ export function MainArea({
       },
     ],
 
-    mark: "bar",
-
-    selection: {
-      monatAuswahl: {
-        type: "single",
-        fields: ["month"],
-        on: "click",
-        clear: "dblclick",
+    // params statt selection
+    params: [
+      {
+        name: "monat_select",
+        select: {
+          type: "point",
+          fields: ["month"],
+          on: "click",
+          clear: "dblclick",
+        },
       },
-    },
+    ],
+
+    mark: "bar",
 
     encoding: {
       x: {
@@ -71,19 +75,27 @@ export function MainArea({
         title: "Kinderanteil in %",
         scale: { domain: [0, 5] },
       },
+
+      //param statt selection
       color: {
         condition: {
-          selection: "monatAuswahl",
+          param: "monat_select",
           value: "#ff7f0e",
         },
         value: "#4c78a8",
       },
+
       tooltip: [
-        { field: "month", type: "ordinal" },
-        { field: "kinderanteil_prozent", type: "quantitative" },
+        { field: "month", type: "ordinal", title: "Monat" },
+        {
+          field: "kinderanteil_prozent",
+          type: "quantitative",
+          title: "Kinderanteil (%)",
+        },
       ],
     },
   };
+
   // Für Abfrage höchster %-Wert
   const maxEintrag = kinderanteil.Werte.reduce((max, curr) => {
     if (
@@ -108,15 +120,24 @@ export function MainArea({
           {endDate}
         </h3>
       )}
-
-      <VegaLite spec={spec} />
+      <VegaLite
+        spec={spec}
+        signalListeners={{
+          monat_select: (_name, value) => {
+            if (Array.isArray(value) && value.length > 0) {
+              setSelectedMonth(value[0].month);
+            } else {
+              setSelectedMonth(null);
+            }
+          },
+        }}
+      />
       <p className="chart-info">
         Hinweis: Der Datensatz ist teilweise lückenhaft. In einzelnen Monaten
         wurden unrealistisch hohe Kinderanteile erfasst. Um eine vergleichbare
         Darstellung zu ermöglichen, wurden Kinderanteile in der Visualisierung
         bei maximal 5% begrenzt.
       </p>
-
       <h3>
         Höchster Kinderanteil im ausgewählten Zeitraum: {maxEintrag.month}(
         {maxEintrag.kinderanteil_prozent} %){" "}
