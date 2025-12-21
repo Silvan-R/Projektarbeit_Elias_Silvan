@@ -1,5 +1,9 @@
 {
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.3.6",
+    "@mui/material": "^7.3.6",
     "react-vega": "^8.0.0",
     "vega": "^6.2.0",
     "vega-lite": "^6.4.1"

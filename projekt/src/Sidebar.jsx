@@ -5,8 +5,21 @@ export const Sidebar = ({
   selectedMonth,
   kinderanteil,
 }) => {
-  // Noch kein Monat ausgewählt oder keine Daten
-  if (!selectedMonth || !kinderanteil) {
+  // ----------------------------------
+  // Grunddaten fehlen
+  // ----------------------------------
+  if (!kinderanteil || !kinderanteil.Werte) {
+    return (
+      <aside className="sidebar">
+        <p>Keine Daten geladen</p>
+      </aside>
+    );
+  }
+
+  // ----------------------------------
+  // Noch kein Monat ausgewählt
+  // ----------------------------------
+  if (!selectedMonth) {
     return (
       <aside className="sidebar">
         <div style={{ display: "flex", gap: "10px" }}>
@@ -36,13 +49,27 @@ export const Sidebar = ({
     );
   }
 
-  // Daten zum ausgewählten Monat finden
+  // ----------------------------------
+  // Daten zum ausgewählten Monat
+  // ----------------------------------
   const daten = kinderanteil.Werte.find((d) => d.month === selectedMonth);
 
-  if (!daten) return null;
+  if (!daten) {
+    return (
+      <aside className="sidebar">
+        <p>Keine Daten für den ausgewählten Monat verfügbar.</p>
+      </aside>
+    );
+  }
+
+  const totalPersonen =
+    typeof daten.total_personen === "number"
+      ? daten.total_personen
+      : daten.children + daten.adults;
 
   return (
     <aside className="sidebar">
+      {/* Standort + Zeitraum */}
       <div style={{ display: "flex", gap: "10px" }}>
         <div style={{ flex: 1 }}>
           <h3>Standort</h3>
@@ -65,6 +92,7 @@ export const Sidebar = ({
 
       <hr />
 
+      {/* Monatsdetails */}
       <h3>Ausgewählter Monat: {daten.month}</h3>
 
       <p>
@@ -77,10 +105,11 @@ export const Sidebar = ({
         <strong>Erwachsene:</strong> {daten.adults}
       </p>
       <p>
-        <strong>Total Personen:</strong> {daten.total_personen}
+        <strong>Total Personen:</strong> {totalPersonen}
       </p>
       <p>
-        <strong>Wetter:</strong> {daten.weather_condition}
+        <strong>Wetterkondition:</strong>{" "}
+        {daten.weather_condition ?? "keine Angabe"}
       </p>
     </aside>
   );

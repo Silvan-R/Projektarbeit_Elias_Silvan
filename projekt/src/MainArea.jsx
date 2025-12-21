@@ -1,102 +1,113 @@
-import { VegaLite } from "react-vega";
+import { Vega } from "react-vega";
 
 export function MainArea({
   kinderanteil,
   startDate,
   endDate,
   selectedLocation,
+  selectedMonth,
   setSelectedMonth,
 }) {
-  // Absicherung: Daten noch nicht da
   if (!kinderanteil || !kinderanteil.Werte) {
     return <main className="main-area">Keine Daten</main>;
   }
-  // für Text der Fokusfrage
+
   const istStandardFokusfrage =
     selectedLocation === "Bahnhofstrasse (Mitte)" &&
     startDate === "2022-01" &&
     endDate === "2023-01";
 
-  const spec = {
-    $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+  const vegaSpec = {
+    $schema: "https://vega.github.io/schema/vega/v5.json",
     width: 500,
     height: 300,
+    padding: 5,
 
-    data: {
-      values: kinderanteil.Werte,
-    },
-
-    transform: [
+    data: [
       {
-        calculate:
-          "datum.kinderanteil_prozent > 5 ? 5 : datum.kinderanteil_prozent",
-        as: "kinderanteil_abgeschnitten",
-      },
-    ],
-
-    // params statt selection
-    params: [
-      {
-        name: "monat_select",
-        select: {
-          type: "point",
-          fields: ["month"],
-          on: "click",
-          clear: "dblclick",
-        },
-      },
-    ],
-
-    mark: "bar",
-
-    encoding: {
-      x: {
-        field: "month",
-        type: "ordinal",
-        title: "Monat",
-        sort: [
-          "Jan",
-          "Feb",
-          "Mär",
-          "Apr",
-          "Mai",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Okt",
-          "Nov",
-          "Dez",
+        name: "table",
+        values: kinderanteil.Werte,
+        transform: [
+          {
+            type: "formula",
+            as: "kinderanteil_abgeschnitten",
+            expr: "datum.kinderanteil_prozent > 5 ? 5 : datum.kinderanteil_prozent",
+          },
+          {
+            type: "formula",
+            as: "month_num",
+            expr: "{'Jan':1,'Feb':2,'Mär':3,'Apr':4,'Mai':5,'Jun':6,'Jul':7,'Aug':8,'Sep':9,'Okt':10,'Nov':11,'Dez':12}[datum.month]",
+          },
         ],
       },
-      y: {
-        field: "kinderanteil_abgeschnitten",
-        type: "quantitative",
-        title: "Kinderanteil in %",
-        scale: { domain: [0, 5] },
-      },
+    ],
 
-      //param statt selection
-      color: {
-        condition: {
-          param: "monat_select",
-          value: "#ff7f0e",
-        },
-        value: "#4c78a8",
+    //  Klick auf Balken setzt Monat
+    signals: [
+      {
+        name: "selectedMonth",
+        value: null,
+        on: [
+          {
+            events: "@bars:click",
+            update: "datum.month",
+          },
+        ],
       },
+    ],
 
-      tooltip: [
-        { field: "month", type: "ordinal", title: "Monat" },
-        {
-          field: "kinderanteil_prozent",
-          type: "quantitative",
-          title: "Kinderanteil (%)",
+    scales: [
+      {
+        name: "x",
+        type: "band",
+        domain: {
+          data: "table",
+          field: "month",
+          sort: { field: "month_num", order: "ascending" },
         },
-      ],
-    },
+        range: "width",
+        padding: 0.1,
+      },
+      {
+        name: "y",
+        domain: [0, 5],
+        range: "height",
+        nice: true,
+      },
+    ],
+
+    axes: [
+      { orient: "bottom", scale: "x", title: "Monat" },
+      { orient: "left", scale: "y", title: "Kinderanteil in %" },
+    ],
+
+    marks: [
+      {
+        name: "bars",
+        type: "rect",
+        from: { data: "table" },
+        encode: {
+          enter: {
+            x: { scale: "x", field: "month" },
+            width: { scale: "x", band: 1 },
+            y: { scale: "y", field: "kinderanteil_abgeschnitten" },
+            y2: { scale: "y", value: 0 },
+            cursor: { value: "pointer" },
+          },
+          update: {
+            fill: [
+              {
+                test: "datum.month === selectedMonth",
+                value: "#ff7f0e", // ausgewählter Monat
+              },
+              { value: "#4c78a8" },
+            ],
+          },
+        },
+      },
+    ],
   };
 
-  // Für Abfrage höchster %-Wert
   const maxEintrag = kinderanteil.Werte.reduce((max, curr) => {
     if (
       typeof curr.kinderanteil_prozent !== "number" ||
@@ -106,6 +117,7 @@ export function MainArea({
     }
     return curr.kinderanteil_prozent > max.kinderanteil_prozent ? curr : max;
   }, kinderanteil.Werte[0]);
+
   return (
     <main className="main-area">
       {istStandardFokusfrage ? (
@@ -120,27 +132,26 @@ export function MainArea({
           {endDate}
         </h3>
       )}
-      <VegaLite
-        spec={spec}
+
+      <Vega
+        spec={vegaSpec}
         signalListeners={{
-          monat_select_store: (_name, value) => {
-            if (Array.isArray(value) && value.length > 0) {
-              setSelectedMonth(value[0].month);
-            } else {
-              setSelectedMonth(null);
-            }
+          selectedMonth: (_name, value) => {
+            setSelectedMonth(value);
           },
         }}
       />
+
       <p className="chart-info">
         Hinweis: Der Datensatz ist teilweise lückenhaft. In einzelnen Monaten
         wurden unrealistisch hohe Kinderanteile erfasst. Um eine vergleichbare
         Darstellung zu ermöglichen, wurden Kinderanteile in der Visualisierung
         bei maximal 5% begrenzt.
       </p>
+
       <h3>
-        Höchster Kinderanteil im ausgewählten Zeitraum: {maxEintrag.month}(
-        {maxEintrag.kinderanteil_prozent} %){" "}
+        Höchster Kinderanteil im ausgewählten Zeitraum: {maxEintrag.month} (
+        {maxEintrag.kinderanteil_prozent} %)
       </h3>
     </main>
   );
