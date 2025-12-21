@@ -123,7 +123,7 @@ export function MainArea({
       <VegaLite
         spec={spec}
         signalListeners={{
-          monat_select: (_name, value) => {
+          monat_select_store: (_name, value) => {
             if (Array.isArray(value) && value.length > 0) {
               setSelectedMonth(value[0].month);
             } else {

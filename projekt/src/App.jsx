@@ -16,6 +16,7 @@ export function App() {
     "Bahnhofstrasse (Mitte)"
   );
 
+
   // angwendete Filter (für Text und Visalisierung):
   const [angewendetesStartDate, setAngewendetesStartDate] = useState(startDate);
   const [angewendetesEndDate, setAngewendetesEndDate] = useState(endDate);
@@ -85,6 +86,8 @@ export function App() {
         darstellung={darstellung}
         setDarstellung={setDarstellung}
         selectedMonth={selectedMonth}
+        kinderanteil={kinderanteil}
+
       />
       <MainArea
         darstellung={darstellung}
