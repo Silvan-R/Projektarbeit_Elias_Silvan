@@ -7,38 +7,25 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 
-# CORS-Konfiguration (wichtig für Frontend)
+# CORS-Konfiguration 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:5173",   # Vite / React
-        # "http://127.0.0.1:5173",
+        "http://localhost:5173",
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# --------------------------------------------------
-# DATEN LADEN (wird beim Start einmal ausgeführt)
-# --------------------------------------------------
-
 # CSV-Datei einlesen
 df = pd.read_csv("Gesamtdatensatz.csv")
 
-# Zeitstempel in Datumsformat umwandeln (UTC)
+# Zeitstempel in Datumsformat umwandeln
 df["timestamp"] = pd.to_datetime(df["timestamp"], utc=True, errors="coerce")
 
 # Zeilen ohne gültigen Zeitstempel entfernen
 df = df.dropna(subset=["timestamp"])
-
-# Kinder- und Erwachsenen-Zahlen in numerische Werte umwandeln
-df["child_pedestrians_count"] = pd.to_numeric(
-    df["child_pedestrians_count"], errors="coerce"
-)
-df["adult_pedestrians_count"] = pd.to_numeric(
-    df["adult_pedestrians_count"], errors="coerce"
-)
 
 # Zeilen entfernen, bei denen Kinder- oder Erwachsenenwerte fehlen
 df = df.dropna(subset=["child_pedestrians_count", "adult_pedestrians_count"])
@@ -83,7 +70,7 @@ def fokusfrage(
         & (df["timestamp"] <= end)
     ]
 
-    # Falls keine Daten gefunden wurden → Fehler zurückgeben
+    # Falls keine Daten gefunden wurden -> Fehler zurückgeben
     if subset.empty:
         raise HTTPException(
             status_code=404,
