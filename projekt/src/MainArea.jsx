@@ -5,7 +5,6 @@ export function MainArea({
   startDate,
   endDate,
   selectedLocation,
-  selectedMonth,
   setSelectedMonth,
 }) {
   if (!kinderanteil || !kinderanteil.Werte) {
@@ -78,7 +77,7 @@ export function MainArea({
 
     axes: [
       { orient: "bottom", scale: "x", title: "Monat" },
-      { orient: "left", scale: "y", title: "Kinderanteil in %" },
+      { orient: "left", scale: "y", title: "Kinderanteil in %", grid: true },
     ],
 
     marks: [

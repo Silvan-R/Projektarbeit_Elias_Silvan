@@ -5,9 +5,6 @@ export const Sidebar = ({
   selectedMonth,
   kinderanteil,
 }) => {
-  // ----------------------------------
-  // Grunddaten fehlen
-  // ----------------------------------
   if (!kinderanteil || !kinderanteil.Werte) {
     return (
       <aside className="sidebar">
@@ -16,14 +13,11 @@ export const Sidebar = ({
     );
   }
 
-  // ----------------------------------
-  // Noch kein Monat ausgewählt
-  // ----------------------------------
   if (!selectedMonth) {
     return (
       <aside className="sidebar">
-        <div style={{ display: "flex", gap: "10px" }}>
-          <div style={{ flex: 1 }}>
+        <div className="sidebar-grid">
+          <div className="sidebar-block">
             <h3>Standort</h3>
             <p>
               <strong>Aktueller Standort:</strong>
@@ -32,7 +26,7 @@ export const Sidebar = ({
             </p>
           </div>
 
-          <div style={{ flex: 1 }}>
+          <div className="sidebar-block">
             <h3>Zeitfenster</h3>
             <p>
               <strong>Von:</strong> {startDate}
@@ -49,9 +43,6 @@ export const Sidebar = ({
     );
   }
 
-  // ----------------------------------
-  // Daten zum ausgewählten Monat
-  // ----------------------------------
   const daten = kinderanteil.Werte.find((d) => d.month === selectedMonth);
 
   if (!daten) {
@@ -70,8 +61,8 @@ export const Sidebar = ({
   return (
     <aside className="sidebar">
       {/* Standort + Zeitraum */}
-      <div style={{ display: "flex", gap: "10px" }}>
-        <div style={{ flex: 1 }}>
+      <div className="sidebar-grid">
+        <div className="sidebar-block">
           <h3>Standort</h3>
           <p>
             <strong>Aktueller Standort:</strong>
@@ -80,7 +71,7 @@ export const Sidebar = ({
           </p>
         </div>
 
-        <div style={{ flex: 1 }}>
+        <div className="sidebar-block">
           <h3>Zeitfenster</h3>
           <p>
             <strong>Von:</strong> {startDate}
@@ -108,7 +99,7 @@ export const Sidebar = ({
         <strong>Total Personen:</strong> {totalPersonen}
       </p>
       <p>
-        <strong>Wetterkondition:</strong>{" "}
+        <strong>Häufigste Wetterkondition:</strong>{" "}
         {daten.weather_condition ?? "keine Angabe"}
       </p>
     </aside>

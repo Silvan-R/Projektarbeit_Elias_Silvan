@@ -7,11 +7,8 @@ import { MainArea } from "./MainArea";
 import { useEffect } from "react";
 
 export function App() {
-  const [bgColor, setBgColor] = useState("#282c34");
-  const [color, setColor] = useState("white");
-  //akutelle Auswahl:
-  const [startDate, setStartDate] = useState("2022-01"); //Standarteinstellung Datum für Fokusfrage
-  const [endDate, setEndDate] = useState("2023-01"); //Standarteinstellung Datum für Fokusfrage
+  const [startDate, setStartDate] = useState("2022-01");
+  const [endDate, setEndDate] = useState("2023-01");
   const [selectedLocation, setSelectedLocation] = useState(
     "Bahnhofstrasse (Mitte)"
   );
@@ -22,10 +19,9 @@ export function App() {
   const [angewendeterLocation, setAngewendeterLocation] =
     useState(selectedLocation);
   //Standarteinstellung Standort für Fokusfrage
-  const [darstellung, setDarstellung] = useState("");
   const [kinderanteil, setKinderanteil] = useState(null);
   const [reset, setReset] = useState(0);
-  const [selectedMonth, setSelectedMonth] = useState(null); //für ineraktives auaswählen in der Grafik
+  const [selectedMonth, setSelectedMonth] = useState(null); //ineraktives Grafik
 
   const anwenden = () => {
     setAngewendetesStartDate(startDate);
@@ -58,7 +54,6 @@ export function App() {
     setSelectedLocation("Bahnhofstrasse (Mitte)");
     setStartDate("2022-01");
     setEndDate("2023-01");
-    setDarstellung("");
 
     setReset((wert) => wert + 1);
   };
@@ -66,10 +61,6 @@ export function App() {
   return (
     <div className="app">
       <Header
-        setBgColor={setBgColor}
-        bgColor={bgColor}
-        color={color}
-        setColor={setColor}
         startDate={startDate}
         setStartDate={setStartDate}
         endDate={endDate}
@@ -82,13 +73,10 @@ export function App() {
         selectedLocation={selectedLocation}
         startDate={startDate}
         endDate={endDate}
-        darstellung={darstellung}
-        setDarstellung={setDarstellung}
         selectedMonth={selectedMonth}
         kinderanteil={kinderanteil}
       />
       <MainArea
-        darstellung={darstellung}
         kinderanteil={kinderanteil}
         startDate={angewendetesStartDate}
         endDate={angewendetesEndDate}

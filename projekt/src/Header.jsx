@@ -5,15 +5,14 @@ export const Header = ({
   setEndDate,
   selectedLocation,
   setSelectedLocation,
-  standorte,
   anwenden,
 }) => {
   return (
     <header className="header">
-      WID Projektarbeit
+      <p>WID Projektarbeit</p>
+
       <div className="header-controls">
-        {/* Standortauswahl */}
-        <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+        <div className="header-group">
           <label htmlFor="standort">Standort:</label>
           <select
             id="standort"
@@ -30,7 +29,7 @@ export const Header = ({
         </div>
 
         {/* Datumsbereich */}
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        <div className="header-group">
           <label>Von:</label>
           <input
             type="month"
