@@ -3,11 +3,9 @@ from fastapi import FastAPI, Query, HTTPException
 import pandas as pd
 from fastapi.middleware.cors import CORSMiddleware
 
-# FastAPI-App erstellen
+
 app = FastAPI()
 
-
-# CORS-Konfiguration 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -18,10 +16,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# CSV-Datei einlesen
+
 df = pd.read_csv("Gesamtdatensatz.csv")
 
-# Zeitstempel in Datumsformat umwandeln
+
 df["timestamp"] = pd.to_datetime(df["timestamp"], utc=True, errors="coerce")
 
 # Zeilen ohne gültigen Zeitstempel entfernen
@@ -56,7 +54,6 @@ def fokusfrage(
     für einen bestimmten Standort und Zeitraum.
     """
 
-    # Start- und Enddatum in Datumsformat umwandeln
     start = pd.to_datetime(start_date, utc=True)
     end = pd.to_datetime(end_date, utc=True)
 
@@ -67,7 +64,6 @@ def fokusfrage(
         & (df["timestamp"] <= end)
     ]
 
-    # Falls keine Daten gefunden wurden -> Fehler zurückgeben
     if subset.empty:
         raise HTTPException(
             status_code=404,
@@ -77,7 +73,7 @@ def fokusfrage(
     # Monat aus dem Zeitstempel extrahieren (1–12)
     subset["month"] = subset["timestamp"].dt.month
 
-    # Daten pro Monat zusammenfassen (Summen)
+    # Daten pro Monat zusammenfassen
     grouped = subset.groupby("month").agg(
         children=("child_pedestrians_count", "sum"),
         adults=("adult_pedestrians_count", "sum"),
@@ -88,19 +84,12 @@ def fokusfrage(
         .agg(lambda x: x.value_counts().idxmax())
         .reset_index()
 )
-    # Alle Monate 1–12 definieren
+    
     alle_monate = pd.DataFrame({"month": range(1, 13)})
-
-    # Sicherstellen, dass alle Monate vorhanden sind
+  
     grouped = alle_monate.merge(grouped, on="month", how="left")
-    # Wetterdaten anhängen
-    grouped = grouped.merge(
-        weather_per_month,
-        on="month",
-        how="left"
-    )
+    grouped = grouped.merge(weather_per_month, on="month", how="left")
     grouped["weather_condition"] = grouped["weather_condition"].fillna("Keine Daten")
-
 
     # Fehlende Werte mit 0 ersetzen
     grouped["children"] = grouped["children"].fillna(0)
@@ -129,10 +118,8 @@ def fokusfrage(
             }
         )
 
-    # Monat mit dem höchsten Kinderanteil bestimmen
     max_month = max(results, key=lambda x: x["kinderanteil_prozent"])
 
-    # Resultat zurückgeben
     return {
         "Werte": results,   
         "max": max_month,    

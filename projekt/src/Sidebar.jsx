@@ -60,7 +60,6 @@ export const Sidebar = ({
 
   return (
     <aside className="sidebar">
-      {/* Standort + Zeitraum */}
       <div className="sidebar-grid">
         <div className="sidebar-block">
           <h3>Standort</h3>
@@ -83,7 +82,6 @@ export const Sidebar = ({
 
       <hr />
 
-      {/* Monatsdetails */}
       <h3>Ausgewählter Monat: {daten.month}</h3>
 
       <p>
