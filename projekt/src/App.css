@@ -21,28 +21,46 @@ body {
   white-space: nowrap;
   gap: 20px;
   padding: 10px 20px;
-  transition: transform 0.2s ease;
-}
-.header-controls {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  white-space: nowrap;
 }
 
-sidebar {
+.header-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-controls {
+  display: flex;
+  gap: 20px;
+}
+
+.sidebar {
   background: lightgray;
   padding: 20px;
 }
 
-footer {
+.sidebar-grid {
+  display: flex;
+  gap: 12px;
+}
+
+.sidebar-block {
+  flex: 1;
+}
+
+.footer {
   background: rgb(247, 230, 0);
   grid-column: 1 / -1;
   padding: 20px;
 }
-aside {
-  background: lightgray;
+
+.footer-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
+
 main {
   background: white;
   padding: 20px;
