@@ -94,6 +94,7 @@ export function App() {
         endDate={angewendetesEndDate}
         selectedLocation={angewendeterLocation}
         setSelectedMonth={setSelectedMonth}
+        selectedMonth={selectedMonth}
       />
       <Footer zurücksetzen={zurücksetzen} />
     </div>
