@@ -35,9 +35,6 @@ Monate = [
     "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"
 ]
 
-df["weather_condition"] = df["weather_condition"].astype(str)
-
-
 
 @app.get("/fokusfrage")
 def fokusfrage(
@@ -94,7 +91,7 @@ def fokusfrage(
     # Alle Monate 1–12 definieren
     alle_monate = pd.DataFrame({"month": range(1, 13)})
 
-# Sicherstellen, dass alle Monate vorhanden sind
+    # Sicherstellen, dass alle Monate vorhanden sind
     grouped = alle_monate.merge(grouped, on="month", how="left")
     # Wetterdaten anhängen
     grouped = grouped.merge(
@@ -105,7 +102,7 @@ def fokusfrage(
     grouped["weather_condition"] = grouped["weather_condition"].fillna("Keine Daten")
 
 
-# Fehlende Werte mit 0 ersetzen
+    # Fehlende Werte mit 0 ersetzen
     grouped["children"] = grouped["children"].fillna(0)
     grouped["adults"] = grouped["adults"].fillna(0)
 
